@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+        <title>Dashboard Admin</title>
+            <script src="https://cdn.tailwindcss.com"></script>
+            </head>
+            <body class="bg-zinc-950 text-white p-10">
+                <div class="max-w-4xl mx-auto">
+                        <h1 class="text-4xl font-black mb-10 text-red-600">PAINEL DE CONTROLO</h1>
+                                <div class="bg-zinc-900 p-8 rounded-2xl border border-white/10">
+                                            <h2 class="text-xl font-bold mb-4">Adicionar Nova Música</h2>
+                                                        <div class="grid gap-4">
+                                                                        <input type="text" id="m-title" placeholder="Título" class="bg-zinc-800 p-3 rounded">
+                                                                                        <input type="file" id="m-file" class="text-sm">
+                                                                                                        <button id="btnUpload" class="bg-green-600 py-3 rounded font-bold">PUBLICAR NO SITE</button>
+                                                                                                                    </div>
+                                                                                                                            </div>
+                                                                                                                                </div>
+                                                                                                                                    <script type="module">
+                                                                                                                                            import { auth, db, storage } from '../assets/js/firebase-config.js';
+                                                                                                                                                    import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+                                                                                                                                                            import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+                                                                                                                                                                    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+                                                                                                                                                                            onAuthStateChanged(auth, u => { if(!u) window.location.href='login.html'; });
+
+                                                                                                                                                                                    document.getElementById('btnUpload').onclick = async () => {
+                                                                                                                                                                                                const file = document.getElementById('m-file').files[0];
+                                                                                                                                                                                                            if(!file) return alert("Escolha uma capa!");
+                                                                                                                                                                                                                        const sRef = ref(storage, `musicas/${file.name}`);
+                                                                                                                                                                                                                                    await uploadBytes(sRef, file);
+                                                                                                                                                                                                                                                const url = await getDownloadURL(sRef);
+                                                                                                                                                                                                                                                            await addDoc(collection(db, "songs"), { title: document.getElementById('m-title').value, cover: url });
+                                                                                                                                                                                                                                                                        alert("Música adicionada!");
+                                                                                                                                                                                                                                                                                };
+                                                                                                                                                                                                                                                                                    </script>
+                                                                                                                                                                                                                                                                                    </body>
+                                                                                                                                                                                                                                                                                    </html>
