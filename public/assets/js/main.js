@@ -1,6 +1,7 @@
 import { db, auth, storage } from './firebase-config.js';
 import { collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+
 // --- ROUTER (Navegação Premium) ---
 const routes = {
     home: async () => {
